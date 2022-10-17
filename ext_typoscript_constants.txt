@@ -1,0 +1,4 @@
+# cat=powermailcaptcha//0010; type=text; label= Google Recaptcha Sitekey: Go to developers.google.com/recaptcha/ and register your domain. After that you can add your site key here.
+plugin.tx_powermailcaptcha.sitekey = abcdef
+
+

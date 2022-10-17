@@ -1,0 +1,27 @@
+{
+  "name": "traw/powermailcaptcha",
+  "description": "Captcha Extension for Powermail",
+  "type": "typo3-cms-extension",
+  "keywords": [
+    "TYPO3 CMS",
+    "Powermail",
+    "Captcha"
+  ],
+  "authors": [
+    {
+      "name": "Thomas Rawiel",
+      "role": "Developer"
+    }
+  ],
+  "license": "GPL-3.0-or-later",
+  "autoload": {
+    "psr-4": {
+      "TRAW\\Powermailcaptcha\\": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "powermailcaptcha"
+    }
+  }
+}
