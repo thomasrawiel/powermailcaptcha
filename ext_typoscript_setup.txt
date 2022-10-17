@@ -1,32 +1,37 @@
 plugin.tx_powermail {
-	view {
-		partialRootPaths {
-			10 = EXT:powermailcaptcha/Resources/Private/Partials/
-		}
-	}
-	settings.setup {
-		recaptcha {
-			sitekey = {$plugin.tx_powermailcaptcha.sitekey}
-		}
-		spamshield.methods {
-			# Add recaptcha spamcheck
-			10 {
-				_enable = 1
+    view {
+        partialRootPaths {
+            10 = EXT:powermailcaptcha/Resources/Private/Partials/
+        }
+    }
 
-				# Spamcheck name
-				name = Friendly Captcha
+    settings.setup {
+        captcha {
+            sitekey = {$plugin.tx_powermailcaptcha.sitekey}
+            captchaMethod = {$plugin.tx_powermailcaptcha.captchaMethod}
+        }
 
-				# Class
-				#class = In2code\Powermailrecaptcha\Domain\Validator\SpamShield\RecaptchaMethod
+        spamshield.methods {
+            # Add recaptcha spamcheck
+            10 {
+                _enable = 1
 
-				# if this check failes - add this indication value to indicator (0 disables this check completely)
-				indication = 10
+                # Spamcheck name
+                name = Friendly Captcha
 
-				# method configuration
-#				configuration {
-#					secretkey = {$plugin.tx_powermailcaptcha.secretkey}
-#				}
-			}
-		}
-	}
+                # Class
+                class = TRAW\Powermailcaptcha\Domain\Validator\SpamShield\CaptchaMethod
+
+                # if this check failes - add this indication value to indicator (0 disables this check completely)
+                indication = 10
+
+                # method configuration
+                configuration {
+                    sitekey = {$plugin.tx_powermailcaptcha.sitekey}
+                    captchaMethod = {$plugin.tx_powermailcaptcha.captchaMethod}
+                    secretkey = {$plugin.tx_powermailcaptcha.secretkey}
+                }
+            }
+        }
+    }
 }

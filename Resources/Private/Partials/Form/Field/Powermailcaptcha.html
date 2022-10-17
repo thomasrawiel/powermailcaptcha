@@ -1,0 +1,35 @@
+{namespace vh=In2code\Powermail\ViewHelpers}
+<div class="powermail_fieldwrap powermail_fieldwrap_type_recaptcha powermail_fieldwrap_{field.marker} {field.css} {settings.styles.framework.fieldAndLabelWrappingClasses}">
+    <label class="{settings.styles.framework.labelClasses}" title="{field.description}">
+        <vh:string.escapeLabels>{field.title}</vh:string.escapeLabels>
+        <span class="mandatory">*</span>
+    </label>
+    <div class="{settings.styles.framework.fieldWrappingClasses}">
+        <f:if condition="{settings.friendlycaptcha.sitekey} != 'abcdef'">
+            <f:then>
+                <f:render section="{settings.captcha.captchaMethod}" arguments="{_all}"/>
+            </f:then>
+            <f:else>
+                <p>
+                    Please check the confiuration for the currently select captchaMethod
+                    {settings.captcha.captchaMethod}
+                </p>
+            </f:else>
+        </f:if>
+    </div>
+</div>
+
+<f:section name="friendlycaptcha">
+    <script type="module"
+            src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.module.min.js"
+            async
+            defer
+    ></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.8/widget.min.js" async
+            defer></script>
+    <div class="frc-captcha" data-sitekey="{settings.captcha.sitekey}"></div>
+</f:section>
+<f:section name="recaptcha">
+    <script src="//www.google.com/recaptcha/api.js" async defer></script>
+    <div class="g-recaptcha" data-sitekey="{settings.captcha.sitekey}"></div>
+</f:section>
