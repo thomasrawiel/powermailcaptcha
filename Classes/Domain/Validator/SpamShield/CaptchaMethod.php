@@ -7,7 +7,6 @@ use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
@@ -51,21 +50,6 @@ class CaptchaMethod extends AbstractMethod
             'responseParameter' => 'response',
         ],
     ];
-
-    /**
-     * @var ?RequestFactory
-     */
-    protected ?RequestFactory $requestFactory = null;
-
-    /**
-     * @param RequestFactory $requestFactory
-     *
-     * @return void
-     */
-    public function injectRequestFactory(RequestFactory $requestFactory)
-    {
-        $this->requestFactory = $requestFactory;
-    }
 
     /**
      * Check if secret key is given and set it
@@ -127,7 +111,8 @@ class CaptchaMethod extends AbstractMethod
             $additionalOptions['form_params'] = $urlParameters;
         }
 
-        $jsonResult = $this->requestFactory->request(
+        $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+        $jsonResult = $requestFactory->request(
             $siteVerifyUri,
             $this->captchaConfiguration[$this->captchaMethod]['verifyMethod'],
             $additionalOptions
@@ -164,6 +149,8 @@ class CaptchaMethod extends AbstractMethod
      */
     protected function getCaptchaResponse(): string
     {
+        $this->requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+
         $response = GeneralUtility::_GP($this->captchaConfiguration[$this->captchaMethod]['responseKey']);
         if (!empty($response)) {
             return $response;
