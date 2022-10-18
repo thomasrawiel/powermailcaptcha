@@ -89,7 +89,7 @@ class CaptchaMethod extends AbstractMethod
     /**
      * @return bool
      */
-    protected function verifyCaptchaResponse():bool
+    protected function verifyCaptchaResponse(): bool
     {
         $additionalOptions = [
             'headers' => ['Cache-Control' => 'no-cache'],
@@ -149,8 +149,6 @@ class CaptchaMethod extends AbstractMethod
      */
     protected function getCaptchaResponse(): string
     {
-        $this->requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
-
         $response = GeneralUtility::_GP($this->captchaConfiguration[$this->captchaMethod]['responseKey']);
         if (!empty($response)) {
             return $response;
