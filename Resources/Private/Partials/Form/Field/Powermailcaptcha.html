@@ -7,15 +7,15 @@
         <span class="mandatory">*</span>
     </label>
     <div class="{settings.styles.framework.fieldWrappingClasses}">
-        <f:if condition="{settings.friendlycaptcha.sitekey} != 'abcdef'">
+        <f:if condition="{settings.powermailcaptcha.sitekey} != 'abcdef'">
             <f:then>
-                <f:render partial="Captcha/{settings.captcha.captchaMethod->f:format.case(mode:'capital')}"
+                <f:render partial="Captcha/{settings.powermailcaptcha.captchaMethod->f:format.case(mode:'capital')}"
                           arguments="{_all}"/>
             </f:then>
             <f:else>
                 <p>
                     Please check the configuration for the currently select captchaMethod
-                    {settings.captcha.captchaMethod}
+                    <b>{settings.powermailcaptcha.captchaMethod}</b>
                 </p>
             </f:else>
         </f:if>

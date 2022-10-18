@@ -6,7 +6,7 @@ plugin.tx_powermail {
     }
 
     settings.setup {
-        captcha {
+        powermailcaptcha {
             sitekey = {$plugin.tx_powermailcaptcha.sitekey}
             captchaMethod = {$plugin.tx_powermailcaptcha.captchaMethod}
         }
