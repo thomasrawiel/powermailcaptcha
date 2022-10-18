@@ -17,7 +17,7 @@ plugin.tx_powermail {
                 _enable = 1
 
                 # Spamcheck name
-                name = Friendly Captcha
+                name = Powermailcaptcha
 
                 # Class
                 class = TRAW\Powermailcaptcha\Domain\Validator\SpamShield\CaptchaMethod
