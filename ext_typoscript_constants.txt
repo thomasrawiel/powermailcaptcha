@@ -1,12 +1,10 @@
 plugin.tx_powermailcaptcha {
     # cat=powermailcaptcha//0010; type=text; label= Captcha Sitekey
-    sitekey = FCMM4BN1UP2QIQ4T
+    sitekey = abcdef
 
     # cat=powermailcaptcha//0020; type=text; label= Captcha Secret Key
-    secretkey = A13PVPVEH7583NAK8HCDKUBP3L8B21LI0VBHD910A1F1JNERAI6K12F8NN
+    secretkey = abcdef
 
     # cat=powermailcaptcha//0020; type=options [Google Recaptcha=recaptcha,Friendly Captcha=friendlycaptcha,hCaptcha=hcaptcha]
-    captchaMethod = friendlycaptcha
+    captchaMethod = recaptcha
 }
-
-

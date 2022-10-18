@@ -30,23 +30,26 @@ class CaptchaMethod extends AbstractMethod
 
     protected array $captchaConfiguration = [
         'recaptcha' => [
+            'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
+            'verifyMethod' => 'GET',
             'responseKey' => 'g-recaptcha-response',
             'secretParameter' => 'secret',
             'responseParameter' => 'response',
-            'verifyMethod' => 'GET',
-            'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
-
         ],
         'friendlycaptcha' => [
+            'siteVerifyUri' => 'https://api.friendlycaptcha.com/api/v1/siteverify',
+            'verifyMethod' => 'POST',
             'responseKey' => 'frc-captcha-solution',
             'secretParameter' => 'secret',
             'responseParameter' => 'solution',
-            'verifyMethod' => 'POST',
-            'siteVerifyUri' => 'https://api.friendlycaptcha.com/api/v1/siteverify',
         ],
         'hcaptcha' => [
-            //TODO
-        ]
+            'siteVerifyUri' => 'https://hcaptcha.com/siteverify',
+            'verifyMethod' => 'POST',
+            'responseKey' => 'h-captcha-response',
+            'secretParameter' => 'secret',
+            'responseParameter' => 'response',
+        ],
     ];
 
     /**
@@ -54,6 +57,11 @@ class CaptchaMethod extends AbstractMethod
      */
     protected ?RequestFactory $requestFactory = null;
 
+    /**
+     * @param RequestFactory $requestFactory
+     *
+     * @return void
+     */
     public function injectRequestFactory(RequestFactory $requestFactory)
     {
         $this->requestFactory = $requestFactory;
@@ -94,7 +102,10 @@ class CaptchaMethod extends AbstractMethod
         return true;
     }
 
-    protected function verifyCaptchaResponse()
+    /**
+     * @return bool
+     */
+    protected function verifyCaptchaResponse():bool
     {
         $additionalOptions = [
             'headers' => ['Cache-Control' => 'no-cache'],
@@ -106,7 +117,7 @@ class CaptchaMethod extends AbstractMethod
             $this->captchaConfiguration[$this->captchaMethod]['responseParameter'] => $this->getCaptchaResponse(),
         ];
 
-        $siteVerifyUri = $this->getSiteVerifyUri();
+        $siteVerifyUri = $this->captchaConfiguration[$this->captchaMethod]['siteVerifyUri'];
 
         if ($this->captchaConfiguration[$this->captchaMethod]['verifyMethod'] === 'GET') {
             $siteVerifyUri = $siteVerifyUri . '?' . http_build_query($urlParameters);
@@ -124,7 +135,7 @@ class CaptchaMethod extends AbstractMethod
 
         $result = \json_decode($jsonResult);
 
-        return $result->success;
+        return (bool)$result->success;
     }
 
     /**
@@ -146,21 +157,6 @@ class CaptchaMethod extends AbstractMethod
             }
         }
         return false;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSiteVerifyUri(): string
-    {
-
-        $siteVerifyUri = $this->captchaConfiguration[$this->captchaMethod]['siteVerifyUri'];
-
-//        if ($this->captchaMethod === 'recaptcha') {
-//            return sprintf($siteVerifyUri, $this->secretKey, $this->getCaptchaResponse());
-//        }
-
-        return $siteVerifyUri;
     }
 
     /**
