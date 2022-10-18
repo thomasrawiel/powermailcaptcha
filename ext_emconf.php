@@ -13,7 +13,9 @@ $EM_CONF[$_EXTKEY] = [
             'typo3' => '10.4.0-11.5.99',
             'powermail' => '8.4.0-10.99.99',
         ],
-        'conflicts' => [],
+        'conflicts' => [
+            'powermailrecaptcha' => '',
+        ],
         'suggests' => [],
     ],
 ];
