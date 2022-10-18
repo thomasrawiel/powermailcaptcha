@@ -1,23 +1,55 @@
 <?php
 declare(strict_types=1);
-namespace In2code\Powermailrecaptcha\Domain\Validator\SpamShield;
+
+namespace TRAW\Powermailcaptcha\Domain\Validator\SpamShield;
 
 use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 
 /**
- * Class RecaptchaMethod
+ * Class CaptchaMethod
+ * @package TRAW\Powermailcaptcha\Domain\Validator\SpamShield
  */
-class RecaptchaMethod extends AbstractMethod
+class CaptchaMethod extends AbstractMethod
 {
     /**
      * @var string
      */
-    protected $secretKey = '';
+    protected string $secretKey = '';
+
+    /**
+     * @var string
+     */
+    protected string $captchaMethod = '';
+
+    protected array $captchaConfiguration = [
+        'recaptcha' => [
+            'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
+            'verifyMethod' => 'GET',
+            'responseKey' => 'g-recaptcha-response',
+            'secretParameter' => 'secret',
+            'responseParameter' => 'response',
+        ],
+        'friendlycaptcha' => [
+            'siteVerifyUri' => 'https://api.friendlycaptcha.com/api/v1/siteverify',
+            'verifyMethod' => 'POST',
+            'responseKey' => 'frc-captcha-solution',
+            'secretParameter' => 'secret',
+            'responseParameter' => 'solution',
+        ],
+        'hcaptcha' => [
+            'siteVerifyUri' => 'https://hcaptcha.com/siteverify',
+            'verifyMethod' => 'POST',
+            'responseKey' => 'h-captcha-response',
+            'secretParameter' => 'secret',
+            'responseParameter' => 'response',
+        ],
+    ];
 
     /**
      * Check if secret key is given and set it
@@ -27,7 +59,9 @@ class RecaptchaMethod extends AbstractMethod
      */
     public function initialize(): void
     {
-        if ($this->isFormWithRecaptchaField()) {
+        $this->captchaMethod = $this->configuration['captchaMethod'];
+
+        if ($this->isFormWithCaptchaField()) {
             if (empty($this->configuration['secretkey']) || $this->configuration['secretkey'] === 'abcdef') {
                 throw new \LogicException(
                     'No secretkey given. Please add a secret key to TypoScript Constants',
@@ -43,15 +77,50 @@ class RecaptchaMethod extends AbstractMethod
      */
     public function spamCheck(): bool
     {
-        if (!$this->isFormWithRecaptchaField() || $this->isCaptchaCheckToSkip()) {
+        if (!$this->isFormWithCaptchaField() || $this->isCaptchaCheckToSkip()) {
             return false;
         }
         if ($this->getCaptchaResponse() !== '') {
-            $jsonResult = GeneralUtility::getUrl($this->getSiteVerifyUri());
-            $result = json_decode($jsonResult);
-            return !$result->success;
+            return !$this->verifyCaptchaResponse();
         }
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function verifyCaptchaResponse():bool
+    {
+        $additionalOptions = [
+            'headers' => ['Cache-Control' => 'no-cache'],
+            'allow_redirects' => false,
+        ];
+
+        $urlParameters = [
+            $this->captchaConfiguration[$this->captchaMethod]['secretParameter'] => $this->secretKey,
+            $this->captchaConfiguration[$this->captchaMethod]['responseParameter'] => $this->getCaptchaResponse(),
+        ];
+
+        $siteVerifyUri = $this->captchaConfiguration[$this->captchaMethod]['siteVerifyUri'];
+
+        if ($this->captchaConfiguration[$this->captchaMethod]['verifyMethod'] === 'GET') {
+            $siteVerifyUri = $siteVerifyUri . '?' . http_build_query($urlParameters);
+        }
+
+        if ($this->captchaConfiguration[$this->captchaMethod]['verifyMethod'] === 'POST') {
+            $additionalOptions['form_params'] = $urlParameters;
+        }
+
+        $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+        $jsonResult = $requestFactory->request(
+            $siteVerifyUri,
+            $this->captchaConfiguration[$this->captchaMethod]['verifyMethod'],
+            $additionalOptions
+        )->getBody()->getContents();
+
+        $result = \json_decode($jsonResult);
+
+        return (bool)$result->success;
     }
 
     /**
@@ -62,12 +131,12 @@ class RecaptchaMethod extends AbstractMethod
      * @throws ExtensionConfigurationPathDoesNotExistException
      * @throws Exception
      */
-    protected function isFormWithRecaptchaField(): bool
+    protected function isFormWithCaptchaField(): bool
     {
         foreach ($this->mail->getForm()->getPages() as $page) {
             /** @var Field $field */
             foreach ($page->getFields() as $field) {
-                if ($field->getType() === 'recaptcha') {
+                if ($field->getType() === 'powermailcaptcha') {
                     return true;
                 }
             }
@@ -76,20 +145,13 @@ class RecaptchaMethod extends AbstractMethod
     }
 
     /**
-     * @return string
-     */
-    protected function getSiteVerifyUri(): string
-    {
-        return 'https://www.google.com/recaptcha/api/siteverify' .
-            '?secret=' . $this->secretKey . '&response=' . $this->getCaptchaResponse();
-    }
-
-    /**
      * @return string|false
      */
     protected function getCaptchaResponse(): string
     {
-        $response = GeneralUtility::_GP('g-recaptcha-response');
+        $this->requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
+
+        $response = GeneralUtility::_GP($this->captchaConfiguration[$this->captchaMethod]['responseKey']);
         if (!empty($response)) {
             return $response;
         }
