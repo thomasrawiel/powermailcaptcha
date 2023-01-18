@@ -20,14 +20,14 @@ class CaptchaMethod extends AbstractMethod
     /**
      * @var string
      */
-    protected string $secretKey = '';
+    protected $secretKey = '';
 
     /**
      * @var string
      */
-    protected string $captchaMethod = '';
+    protected $captchaMethod = '';
 
-    protected array $captchaConfiguration = [
+    protected $captchaConfiguration = [
         'recaptcha' => [
             'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
             'verifyMethod' => 'GET',
