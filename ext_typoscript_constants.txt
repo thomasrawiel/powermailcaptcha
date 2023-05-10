@@ -5,6 +5,6 @@ plugin.tx_powermailcaptcha {
     # cat=powermailcaptcha//0020; type=text; label= Captcha Secret Key
     secretkey = abcdef
 
-    # cat=powermailcaptcha//0020; type=options [Google Recaptcha=recaptcha,Friendly Captcha=friendlycaptcha,hCaptcha=hcaptcha]
+    # cat=powermailcaptcha//0020; type=options [Google Recaptcha=recaptcha,Friendly Captcha=friendlycaptcha,hCaptcha=hcaptcha]; label= Captcha type
     captchaMethod = recaptcha
 }
