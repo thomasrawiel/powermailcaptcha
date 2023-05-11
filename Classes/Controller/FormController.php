@@ -26,5 +26,7 @@ class FormController extends \In2code\Powermail\Controller\FormController
             $siteLanguage = $this->request->getAttribute('site')->getLanguageById($currentLanguageId);
             $this->view->assign('languageIso', $siteLanguage->getTwoLetterIsoCode());
         }
+
+        return parent::formAction();
     }
 }
