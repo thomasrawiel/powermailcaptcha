@@ -1,4 +1,5 @@
-<html data-namespace-typo3-fluid="true">
-<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<script src="https://js.hcaptcha.com/1/api.js{f:if(condition: settings.powermailcaptcha.useSiteLanguage,then:'?hl={languageIso}')}" async defer></script>
 <div class="h-captcha" data-sitekey="{settings.powermailcaptcha.sitekey}"></div>
 </html>
