@@ -47,6 +47,24 @@ plugin.tx_powermailcaptcha.sitekey = 6LdsBBUTAAAAAKMhI67inzeAvzBh5JdRRxlCwbTz
 plugin.tx_powermailcaptcha.secretkey = 6LdsBBUTAAAAAKMhaaaainzeAvzBh5JdRRxlCwbyy
 ```
 
+### Captcha Language
+From Versions >=1.1.0
+
+The current language is added to the captcha via language parameter which is taken from your Site Configuration.
+
+To disable this behavior, add the following to your Typoscript Constants:
+```
+plugin.tx_powermailcaptcha.useSiteLanguage = 0
+```
+
+Depending on your website language, not all languages are supported for every Captcha-Method.
+Read
+* [Friendly Captcha](http://docs.friendlycaptcha.com/#/widget_api?id=data-lang-attribute)
+* [HCaptcha](https://docs.hcaptcha.com/languages/)
+* [Google Recaptcha](https://developers.google.com/recaptcha/docs/language)
+
+for further information on supported language codes.
+
 ## Common pitfalls and best practice
 
 spamshield must be enabled in powermail (TypoScript setup):
@@ -65,13 +83,26 @@ plugin.tx_powermail.settings.setup.spamshield.email = spamreceiver@yourdomain.de
 plugin.tx_powermail.settings.setup.spamshield.logfileLocation = typo3temp/logs/powermailSpam.log
 ```
 
+## Upgrade from 1.0.x to 1.1.0
+If you override powermail's partial `Partial/Form/Page.html` in your own extension, make sure to add the variable `languageIso` to the f:render of the Fields.
+
+e.g.
+```
+<f:render partial="Form/Field/{vh:String.Upper(string:field.type)}" arguments="{field:field, languageIso:languageIso}"/>
+```
+
+
+If you override powermail's FormController in your own extension, please see `EXT:powermailcaptcha/Classes/Controller/FormController.php` on how this extension adds the language variable.
+
+
 
 ## Credits
-This extension is based on [EXT:powermailrecaptcha](https://github.com/einpraegsam/powermailrecaptcha) by einpraegsam. 
+This extension is based on [EXT:powermailrecaptcha](https://github.com/einpraegsam/powermailrecaptcha) by einpraegsam.
 
 
 ## Changelog
 
-| Version    | Date       | Description                                                                                         |
-| ---------- |------------|-----------------------------------------------------------------------------------------------------|
-| 1.0.0      | 2022-10-18 | Initial release                                                                                     |
+| Version | Date       | Description                                                                                         |
+|---------|------------|-----------------------------------------------------------------------------------------------------|
+| 1.1.0   | 2022-10-18 | Add option to force website language onto the Captcha                                                                                     |
+| 1.0.0   | 2022-10-18 | Initial release                                                                                     |
