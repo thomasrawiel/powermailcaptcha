@@ -21,10 +21,7 @@ class FormController extends \In2code\Powermail\Controller\FormController
     public function formAction(): ResponseInterface
     {
         if ($this->settings['powermailcaptcha']['useSiteLanguage'] ?? 0) {
-            $currentLanguageId = GeneralUtility::makeInstance(Context::class)
-                ->getPropertyFromAspect('language', 'id');
-            $siteLanguage = $this->request->getAttribute('site')->getLanguageById($currentLanguageId);
-            $this->view->assign('languageIso', $siteLanguage->getTwoLetterIsoCode());
+            $this->view->assign('languageIso', $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getTwoLetterIsoCode());
         }
 
         return parent::formAction();
