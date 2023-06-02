@@ -1,6 +1,13 @@
 <?php
 defined('TYPO3') or die('Access denied.');
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\In2code\Powermail\Controller\FormController::class] = [
-    'className' => \TRAW\Powermailcaptcha\Controller\FormController::class
-];
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class
+);
+$signalSlotDispatcher->connect(
+    \In2code\Powermail\Controller\FormController::class,
+    'formActionBeforeRenderView',
+    \TRAW\Powermailcaptcha\Slot\FormControllerSlot::class,
+    'formActionBeforeRenderView',
+    FALSE
+);
