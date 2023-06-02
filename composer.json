@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "in2code/powermail": "^8.4 || ^9.0 ||  ^10.5"
+    "in2code/powermail": "^8.4"
   },
   "license": "GPL-3.0-or-later",
   "autoload": {
