@@ -7,11 +7,11 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'thomas.rawiel@gmail.com',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
-    'version' => '1.1.0',
+    'version' => '1.1.1',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.5.99',
-            'powermail' => '8.4.0-10.99.99',
+            'typo3' => '10.4.0-10.4.99',
+            'powermail' => '8.4.0-8.99.99',
         ],
         'conflicts' => [
             'powermailrecaptcha' => '',
