@@ -10,8 +10,8 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '1.1.2',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-10.4.99',
-            'powermail' => '8.4.0-8.99.99',
+            'typo3' => '11.5.0-11.5.99',
+            'powermail' => '9.0.0-10.99.99',
         ],
         'conflicts' => [
             'powermailrecaptcha' => '',
