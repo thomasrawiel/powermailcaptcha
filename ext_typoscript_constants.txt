@@ -1,4 +1,7 @@
 plugin.tx_powermailcaptcha {
+    # cat=powermailcaptcha//0001; type=boolean; label= Enable Captcha Frontend Rendering
+    enable = 1
+
     # cat=powermailcaptcha//0010; type=text; label= Captcha Sitekey
     sitekey = abcdef
 
