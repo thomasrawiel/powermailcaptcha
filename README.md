@@ -47,6 +47,14 @@ plugin.tx_powermailcaptcha.sitekey = 6LdsBBUTAAAAAKMhI67inzeAvzBh5JdRRxlCwbTz
 plugin.tx_powermailcaptcha.secretkey = 6LdsBBUTAAAAAKMhaaaainzeAvzBh5JdRRxlCwbyy
 ```
 
+### Disable captcha
+From versions >= 1.3.0
+
+In case you wish to disable the captcha temporarily, just add the following line to your typoscript constants:
+`plugin.tx_powermailcaptcha.enable = 0`
+
+You can also find this option in the Constant Editor.
+
 ### Captcha Language
 From Versions >=1.1.0
 
@@ -83,7 +91,12 @@ plugin.tx_powermail.settings.setup.spamshield.email = spamreceiver@yourdomain.de
 plugin.tx_powermail.settings.setup.spamshield.logfileLocation = typo3temp/logs/powermailSpam.log
 ```
 
-## Upgrade from 1.0.x to 1.1.0
+Remove the default captcha field by adding the following to your Page TSConfig:
+`TCEFORM.tx_powermail_domain_model_field.type.removeItems = captcha`
+
+
+
+## Upgrade from 1.0.x to >=1.1.x
 If you override powermail's partial `Partial/Form/Page.html` in your own extension, make sure to add the variable `languageIso` to the f:render of the Fields.
 
 e.g.
@@ -104,5 +117,7 @@ This extension is based on [EXT:powermailrecaptcha](https://github.com/einpraegs
 
 | Version | Date       | Description                                                                                         |
 |---------|------------|-----------------------------------------------------------------------------------------------------|
-| 1.1.0   | 2022-10-18 | Add option to force website language onto the Captcha                                                                                     |
+| 1.3.0   | 2023-06-05 | Feature: add option to disable frontend output
+| 1.2.0   | 2023-06-02 | Code Maintenance: simplifiy controller code                                                                                      |
+| 1.1.0   | 2023-05-11 | Add option to force website language onto the Captcha                                                                                     |
 | 1.0.0   | 2022-10-18 | Initial release                                                                                     |
