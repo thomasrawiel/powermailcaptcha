@@ -2,7 +2,7 @@ plugin.tx_powermail {
     view {
         partialRootPaths {
             1 = EXT:powermailcaptcha/Resources/Private/Partials/
-            2 = {$plugin.tx_powermail.view.partialRootPath}
+            5 = {$plugin.tx_powermail.view.partialRootPath}
         }
     }
 
