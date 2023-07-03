@@ -5,13 +5,13 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'plugin',
     'author' => 'Thomas Rawiel',
     'author_email' => 'thomas.rawiel@gmail.com',
-    'state' => 'beta',
+    'state' => 'stable',
     'clearCacheOnLoad' => 0,
-    'version' => '1.3.0',
+    'version' => '1.4.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.0-11.5.99',
-            'powermail' => '9.0.0-10.99.99',
+            'typo3' => '11.5.0-12.4.99',
+            'powermail' => '9.0.0-11.99.99',
         ],
         'conflicts' => [
             'powermailrecaptcha' => '',
