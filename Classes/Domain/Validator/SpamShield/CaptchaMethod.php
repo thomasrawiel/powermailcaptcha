@@ -158,7 +158,9 @@ class CaptchaMethod extends AbstractMethod
 
     /**
      * Captcha check should be skipped on createAction if there was a confirmationAction where the captcha was
-     * already checked before
+     * already checked before.
+     * Captcha check should also be skipped on optinConfirm action if double-optin is activated in Flexform.
+     *
      * Note: $this->flexForm is only available in powermail 3.9 or newer
      *
      * @return bool
@@ -166,8 +168,15 @@ class CaptchaMethod extends AbstractMethod
     protected function isCaptchaCheckToSkip(): bool
     {
         if (property_exists($this, 'flexForm')) {
+            $action = $this->getActionName();
             $confirmationActive = $this->flexForm['settings']['flexform']['main']['confirmation'] === '1';
-            return $this->getActionName() === 'create' && $confirmationActive;
+            $optinActive = $this->flexForm['settings']['flexform']['main']['optin'] === '1';
+            if (($action === 'create' || $action === 'checkCreate') && $confirmationActive) {
+                return true;
+            }
+            if ($action === 'optinConfirm' && $optinActive) {
+                return true;
+            }
         }
         return false;
     }
