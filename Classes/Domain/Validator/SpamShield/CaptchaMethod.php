@@ -171,7 +171,7 @@ class CaptchaMethod extends AbstractMethod
             $action = $this->getActionName();
             $confirmationActive = $this->flexForm['settings']['flexform']['main']['confirmation'] === '1';
             $optinActive = $this->flexForm['settings']['flexform']['main']['optin'] === '1';
-            if ($action === 'create' && $confirmationActive) {
+            if (($action === 'create' || $action === 'checkCreate') && $confirmationActive) {
                 return true;
             }
             if ($action === 'optinConfirm' && $optinActive) {
