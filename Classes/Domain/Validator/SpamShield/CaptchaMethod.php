@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TRAW\Powermailcaptcha\Domain\Validator\SpamShield;
@@ -13,7 +14,6 @@ use TYPO3\CMS\Extbase\Object\Exception;
 
 /**
  * Class CaptchaMethod
- * @package TRAW\Powermailcaptcha\Domain\Validator\SpamShield
  */
 class CaptchaMethod extends AbstractMethod
 {
@@ -54,7 +54,6 @@ class CaptchaMethod extends AbstractMethod
     /**
      * Check if secret key is given and set it
      *
-     * @return void
      * @throws \Exception
      */
     public function initialize(): void

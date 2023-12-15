@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Powermail Captcha',
     'description' => 'Captcha Extension for Powermail',
@@ -7,7 +8,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'thomas.rawiel@gmail.com',
     'state' => 'stable',
     'clearCacheOnLoad' => 0,
-    'version' => '1.4.2',
+    'version' => '1.4.3',
     'constraints' => [
         'depends' => [
             'typo3' => '11.5.0-12.4.99',
