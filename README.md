@@ -94,7 +94,12 @@ plugin.tx_powermail.settings.setup.spamshield.logfileLocation = typo3temp/logs/p
 Remove the default captcha field by adding the following to your Page TSConfig:
 `TCEFORM.tx_powermail_domain_model_field.type.removeItems = captcha`
 
+## Breaking change - Upgrade from <1.5.0 to >=1.5.0
+The typoscript has previously been automatically loaded in a Preset TypoScript setup file. 
+However, this is no longer the case. In multisite environments where some websites dont use powermail the typoscript is not needed.  
+Also in some case it's hard to override settings which are made in a Preset TypoScript (for example: ext_typoscript_setup.typoscript).
 
+Therefore, from version 1.5.0 and up the typoscript has to be manually added in your website's static template.
 
 ## Upgrade from 1.0.x to >=1.1.x
 If you override powermail's partial `Partial/Form/Page.html` in your own extension, make sure to add the variable `languageIso` to the f:render of the Fields.
@@ -117,6 +122,7 @@ This extension is based on [EXT:powermailrecaptcha](https://github.com/einpraegs
 
 | Version | Date       | Description                                                                                         |
 |---------|------------|-----------------------------------------------------------------------------------------------------|
+| 1.5.0   | 2024-04-24 | Feature: add typoscript as a static template
 | 1.3.0   | 2023-06-05 | Feature: add option to disable frontend output
 | 1.2.0   | 2023-06-02 | Code Maintenance: simplifiy controller code                                                                                      |
 | 1.1.0   | 2023-05-11 | Add option to force website language onto the Captcha                                                                                     |
