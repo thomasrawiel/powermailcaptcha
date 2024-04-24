@@ -5,14 +5,12 @@ Captcha Extension for TYPO3 powermail to prevent spam
 ## Dependencies
 
 * powermail >= 8.0
-* TYPO3 10 or 11
+* TYPO3 11 or 12
 
 
 ## Installation
 
 Just install this extension via composer `composer require traw/powermailcaptcha`
-
-There are currently 3 possible captcha methods to use: 
 
 
 ### Google Recaptcha
@@ -31,6 +29,10 @@ There are currently 3 possible captcha methods to use:
 - Add sitekey and secretkey to TypoScript Constants (see example below)
 - In TypoScript Constants, set the captcha method to `hcaptcha`
 
+### Cloudflare
+- Register your domain to [cloudflare.com](https://www.cloudflare.com/products/turnstile/)
+- Add sitekey and secretkey to TypoScript Constants (see example below)
+- In TypoScript Constants, set the captcha method to `cloudflare`
 
 ### General
 - Ensure that spamshield is enabled (see below)
@@ -43,6 +45,7 @@ Example for TypoScript Constants:
 plugin.tx_powermailcaptcha.captchaMethod = recaptcha
 plugin.tx_powermailcaptcha.captchaMethod = friendlycaptcha
 plugin.tx_powermailcaptcha.captchaMethod = hcaptcha
+plugin.tx_powermailcaptcha.captchaMethod = cloudflare
 plugin.tx_powermailcaptcha.sitekey = 6LdsBBUTAAAAAKMhI67inzeAvzBh5JdRRxlCwbTz
 plugin.tx_powermailcaptcha.secretkey = 6LdsBBUTAAAAAKMhaaaainzeAvzBh5JdRRxlCwbyy
 ```
@@ -70,6 +73,7 @@ Read
 * [Friendly Captcha](http://docs.friendlycaptcha.com/#/widget_api?id=data-lang-attribute)
 * [HCaptcha](https://docs.hcaptcha.com/languages/)
 * [Google Recaptcha](https://developers.google.com/recaptcha/docs/language)
+* [Cloudflare](https://developers.cloudflare.com/turnstile/reference/supported-languages/)
 
 for further information on supported language codes.
 
@@ -122,6 +126,7 @@ This extension is based on [EXT:powermailrecaptcha](https://github.com/einpraegs
 
 | Version | Date       | Description                                                                                         |
 |---------|------------|-----------------------------------------------------------------------------------------------------|
+| 1.6.0   | 2024-04-24 | Feature: add Cloudflare Turnstile captcha method
 | 1.5.0   | 2024-04-24 | Feature: add typoscript as a static template
 | 1.3.0   | 2023-06-05 | Feature: add option to disable frontend output
 | 1.2.0   | 2023-06-02 | Code Maintenance: simplifiy controller code                                                                                      |

@@ -49,6 +49,13 @@ class CaptchaMethod extends AbstractMethod
             'secretParameter' => 'secret',
             'responseParameter' => 'response',
         ],
+        'cloudflare' => [
+            'siteVerifyUri' => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+            'verifyMethod' => 'POST',
+            'responseKey' => 'cf-turnstile-response',
+            'secretParameter' => 'secret',
+            'responseParameter' => 'response',
+        ],
     ];
 
     /**
