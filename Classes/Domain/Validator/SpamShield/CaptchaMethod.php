@@ -6,6 +6,7 @@ namespace TRAW\Powermailcaptcha\Domain\Validator\SpamShield;
 
 use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
+use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -155,7 +156,13 @@ class CaptchaMethod extends AbstractMethod
      */
     protected function getCaptchaResponse(): string
     {
-        $response = GeneralUtility::_GP($this->captchaConfiguration[$this->captchaMethod]['responseKey']);
+        $request = $this->getRequest();
+        $response = null;
+
+        if (!empty($request)) {
+            $response = $request->getParsedBody()[$this->captchaConfiguration[$this->captchaMethod]['responseKey']];
+        }
+
         if (!empty($response)) {
             return $response;
         }
@@ -192,7 +199,21 @@ class CaptchaMethod extends AbstractMethod
      */
     protected function getActionName(): string
     {
-        $pluginVariables = GeneralUtility::_GPmerged('tx_powermail_pi1');
-        return $pluginVariables['action'];
+        $request = $this->getRequest();
+        $pluginVariables = [];
+
+        if (!empty($request)) {
+            $getParams = $request->getQueryParams()['tx_powermail_pi1'] ?? [];
+            $postParams = $request->getParsedBody()['tx_powermail_pi1'] ?? [];
+            $pluginVariables = $getParams;
+
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginVariables, $postParams);
+        }
+        return $pluginVariables['action'] ?? '';
+    }
+
+    protected function getRequest(): ?RequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'] ?? null;
     }
 }

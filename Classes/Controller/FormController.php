@@ -19,7 +19,7 @@ class FormController extends \In2code\Powermail\Controller\FormController
     public function formAction(): ResponseInterface
     {
         if ($this->settings['powermailcaptcha']['useSiteLanguage'] ?? 0) {
-            $this->view->assign('languageIso', $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getTwoLetterIsoCode());
+            $this->view->assign('languageIso', $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode());
         }
 
         return parent::formAction();
