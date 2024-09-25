@@ -133,7 +133,8 @@ This extension is based on [EXT:powermailrecaptcha](https://github.com/einpraegs
 
 | Version | Date       | Description                                                                                         |
 |---------|------------|-----------------------------------------------------------------------------------------------------|
-| 1.7.0   | 2024-09-25 | Feature: add Prosopo Procaptcha captcha method
+| 2.1.0   | 2024-09-25 | Feature: add Prosopo Procaptcha captcha method
+| 2.0.0   | 2024-07-31 | Dropped support for TYPO3 11 and older powermail version
 | 1.6.0   | 2024-04-24 | Feature: add Cloudflare Turnstile captcha method
 | 1.5.0   | 2024-04-24 | Feature: add typoscript as a static template
 | 1.3.0   | 2023-06-05 | Feature: add option to disable frontend output
