@@ -34,6 +34,11 @@ Just install this extension via composer `composer require traw/powermailcaptcha
 - Add sitekey and secretkey to TypoScript Constants (see example below)
 - In TypoScript Constants, set the captcha method to `cloudflare`
 
+### Prosopo Procaptcha
+- Register your domain to [prosopo.io](https://www.prosopo.io/)
+- Add sitekey and secretkey to TypoScript Constants (see example below)
+- In TypoScript Constants, set the captcha method to `procaptcha`
+
 ### General
 - Ensure that spamshield is enabled (see below)
 - Add a field of Type Powermailcaptcha to your powermail form
@@ -46,6 +51,7 @@ plugin.tx_powermailcaptcha.captchaMethod = recaptcha
 plugin.tx_powermailcaptcha.captchaMethod = friendlycaptcha
 plugin.tx_powermailcaptcha.captchaMethod = hcaptcha
 plugin.tx_powermailcaptcha.captchaMethod = cloudflare
+plugin.tx_powermailcaptcha.captchaMethod = procaptcha
 plugin.tx_powermailcaptcha.sitekey = 6LdsBBUTAAAAAKMhI67inzeAvzBh5JdRRxlCwbTz
 plugin.tx_powermailcaptcha.secretkey = 6LdsBBUTAAAAAKMhaaaainzeAvzBh5JdRRxlCwbyy
 ```
@@ -74,6 +80,7 @@ Read
 * [HCaptcha](https://docs.hcaptcha.com/languages/)
 * [Google Recaptcha](https://developers.google.com/recaptcha/docs/language)
 * [Cloudflare](https://developers.cloudflare.com/turnstile/reference/supported-languages/)
+* [Prosopo Procaptcha](https://github.com/prosopo/captcha/tree/main/packages/common/src/locales)
 
 for further information on supported language codes.
 
@@ -126,6 +133,7 @@ This extension is based on [EXT:powermailrecaptcha](https://github.com/einpraegs
 
 | Version | Date       | Description                                                                                         |
 |---------|------------|-----------------------------------------------------------------------------------------------------|
+| 1.7.0   | 2024-09-25 | Feature: add Prosopo Procaptcha captcha method
 | 1.6.0   | 2024-04-24 | Feature: add Cloudflare Turnstile captcha method
 | 1.5.0   | 2024-04-24 | Feature: add typoscript as a static template
 | 1.3.0   | 2023-06-05 | Feature: add option to disable frontend output

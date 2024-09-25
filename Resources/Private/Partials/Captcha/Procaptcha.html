@@ -1,0 +1,5 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<script src="https://js.prosopo.io/js/procaptcha.bundle.js" type="module" defer></script>
+<div class="procaptcha" data-sitekey="{settings.powermailcaptcha.sitekey}"{f:if(condition:settings.powermailcaptcha.useSiteLanguage,then:' data-language="{languageIso}"')}></div>
+</html>

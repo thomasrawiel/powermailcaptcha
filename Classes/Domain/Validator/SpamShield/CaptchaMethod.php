@@ -56,6 +56,12 @@ class CaptchaMethod extends AbstractMethod
             'secretParameter' => 'secret',
             'responseParameter' => 'response',
         ],
+        'procaptcha' => [
+            'siteVerifyUri' => 'https://api.prosopo.io/siteverify',
+            'verifyMethod' => 'POST',
+            'token' => 'procaptcha-response',
+            'secret' => 'secret',
+        ],
     ];
 
     /**
