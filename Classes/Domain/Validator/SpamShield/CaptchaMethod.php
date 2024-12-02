@@ -6,6 +6,7 @@ namespace TRAW\Powermailcaptcha\Domain\Validator\SpamShield;
 
 use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
+use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -27,6 +28,9 @@ class CaptchaMethod extends AbstractMethod
      */
     protected string $captchaMethod = '';
 
+    /**
+     * @var array|array[]
+     */
     protected array $captchaConfiguration = [
         'recaptcha' => [
             'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
@@ -133,7 +137,7 @@ class CaptchaMethod extends AbstractMethod
 
         $result = \json_decode($jsonResult);
 
-        return (bool)$result->success;
+        return $this->getExpextedResponseAttribute($result);
     }
 
     /**
@@ -201,5 +205,18 @@ class CaptchaMethod extends AbstractMethod
     {
         $pluginVariables = GeneralUtility::_GPmerged('tx_powermail_pi1');
         return $pluginVariables['action'];
+    }
+
+    /**
+     * @param array|\stdClass $result
+     *
+     * @return bool
+     */
+    protected function getExpextedResponseAttribute(array|\stdClass $result): bool {
+        if($this->configuration['captchaMethod'] === 'procaptcha') {
+            return $result->status === 'ok' && $result->verified;
+        }
+
+        return (bool)$result->success;
     }
 }
