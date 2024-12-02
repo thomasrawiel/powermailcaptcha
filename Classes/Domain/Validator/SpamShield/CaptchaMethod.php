@@ -28,6 +28,9 @@ class CaptchaMethod extends AbstractMethod
      */
     protected string $captchaMethod = '';
 
+    /**
+     * @var array|array[]
+     */
     protected array $captchaConfiguration = [
         'recaptcha' => [
             'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
@@ -134,7 +137,7 @@ class CaptchaMethod extends AbstractMethod
 
         $result = \json_decode($jsonResult);
 
-        return (bool)$result->success;
+        return $this->getExpextedResponseAttribute($result);
     }
 
     /**
@@ -219,6 +222,22 @@ class CaptchaMethod extends AbstractMethod
         return $pluginVariables['action'] ?? '';
     }
 
+    /**
+     * @param array|\stdClass $result
+     *
+     * @return bool
+     */
+    protected function getExpextedResponseAttribute(array|\stdClass $result): bool {
+        if($this->configuration['captchaMethod'] === 'procaptcha') {
+            return $result->status === 'ok' && $result->verified;
+        }
+
+        return (bool)$result->success;
+    }
+
+    /**
+     * @return RequestInterface|null
+     */
     protected function getRequest(): ?RequestInterface
     {
         return $GLOBALS['TYPO3_REQUEST'] ?? null;
