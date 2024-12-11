@@ -3,13 +3,8 @@
 declare(strict_types=1);
 namespace TRAW\Powermailcaptcha\EventListener;
 
-use In2code\Powermail\Controller\AbstractController;
-use In2code\Powermail\Domain\Model\Form;
 use In2code\Powermail\Events\FormControllerFormActionEvent;
-use In2code\Powermail\Utility\FrontendUtility;
-use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * >= v12 only
@@ -22,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class PowermailFormControllerFormActionEventListener implements SingletonInterface
 {
-    public function __invoke(FormControllerFormActionEvent $event): void
+    public function handleEvent(FormControllerFormActionEvent $event): void
     {
         $form = $event->getForm();
         if ($form === null) {
@@ -32,8 +27,13 @@ final class PowermailFormControllerFormActionEventListener implements SingletonI
         $settings = $formController->getSettings();
 
         if ($settings['powermailcaptcha']['useSiteLanguage'] ?? 0) {
-            // !!!! this method does not exist
-            $this->event->assignView('languageIso', $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode());
+            /** !!!! this method does not exist yet
+             * see https://github.com/in2code-de/powermail/pull/1199
+             */
+            if (method_exists($event, 'assign')) {
+                $event->assign('languageIso',
+                    $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode());
+            }
         }
     }
 }
