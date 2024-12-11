@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace TRAW\Powermailcaptcha\EventListener;
 
 use In2code\Powermail\Events\FormControllerFormActionEvent;
@@ -19,21 +20,16 @@ final class PowermailFormControllerFormActionEventListener implements SingletonI
 {
     public function handleEvent(FormControllerFormActionEvent $event): void
     {
-        $form = $event->getForm();
-        if ($form === null) {
+        if ($event->getForm() === null) {
             return;
         }
-        $formController = $event->getFormController();
-        $settings = $formController->getSettings();
+        $settings = $event->getFormController()->getSettings();
 
         if ($settings['powermailcaptcha']['useSiteLanguage'] ?? 0) {
-            /** !!!! this method does not exist yet
-             * see https://github.com/in2code-de/powermail/pull/1199
-             */
-            if (method_exists($event, 'assign')) {
-                $event->assign('languageIso',
-                    $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode());
-            }
+            $event->addViewVariables([
+                    'languageIso' => $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode(),
+                ]
+            );
         }
     }
 }
