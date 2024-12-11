@@ -30,9 +30,11 @@ final class PowermailFormControllerFormActionEventListener implements SingletonI
             /** !!!! this method does not exist yet
              * see https://github.com/in2code-de/powermail/pull/1199
              */
-            if (method_exists($event, 'assign')) {
-                $event->assign('languageIso',
-                    $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode());
+            if (method_exists($event, 'addViewVariables')) {
+                $event->addViewVariables([
+                        'languageIso' => $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode()
+                    ]
+                );
             }
         }
     }
