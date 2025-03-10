@@ -6,7 +6,6 @@ namespace TRAW\Powermailcaptcha\Domain\Validator\SpamShield;
 
 use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
-use In2code\Powermail\Utility\FrontendUtility;
 use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
@@ -69,13 +68,6 @@ class CaptchaMethod extends AbstractMethod
             'responseParameter' => 'token',
         ],
     ];
-
-    public function __construct(protected \In2code\Powermail\Domain\Model\Mail $mail, protected array $settings, protected array $flexForm, protected array $configuration = [])
-    {
-        $this->arguments = FrontendUtility::getArguments();
-        $this->settings = $this->settings;
-        $this->flexForm = $flexForm;
-    }
 
     /**
      * Check if secret key is given and set it
