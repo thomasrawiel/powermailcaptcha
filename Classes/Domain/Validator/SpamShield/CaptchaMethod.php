@@ -39,6 +39,13 @@ class CaptchaMethod extends AbstractMethod
             'secretParameter' => 'secret',
             'responseParameter' => 'response',
         ],
+        'recaptcha3' => [
+            'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
+            'verifyMethod' => 'GET',
+            'responseKey' => 'g-recaptcha-response',
+            'secretParameter' => 'secret',
+            'responseParameter' => 'response',
+        ],
         'friendlycaptcha' => [
             'siteVerifyUri' => 'https://api.friendlycaptcha.com/api/v1/siteverify',
             'verifyMethod' => 'POST',

@@ -2,6 +2,12 @@
       xmlns:vh="http://In2code/Powermail/ViewHelpers"
       data-namespace-typo3-fluid="true">
 <f:if condition="{settings.powermailcaptcha.enable}">
+    <f:if condition="{settings.powermailcaptcha.captchaMethod} === 'recaptcha3'">
+        <f:then><f:render section="InvisibleRendering"  arguments="{_all}"/></f:then>
+        <f:else><f:render section="DefaultRendering" arguments="{_all}" /></f:else>
+    </f:if>
+</f:if>
+<f:section name="DefaultRendering">
     <div class="powermail_fieldwrap powermail_fieldwrap_type_recaptcha powermail_fieldwrap_{field.marker} {field.css} {settings.styles.framework.fieldAndLabelWrappingClasses}">
         <label class="{settings.styles.framework.labelClasses}" title="{field.description}">
             <vh:string.escapeLabels>{field.title}</vh:string.escapeLabels>
@@ -22,5 +28,19 @@
             </f:if>
         </div>
     </div>
-</f:if>
+</f:section>
+<f:section name="InvisibleRendering">
+    <f:if condition="{settings.powermailcaptcha.sitekey} != 'abcdef'">
+        <f:then>
+            <f:render partial="Captcha/{settings.powermailcaptcha.captchaMethod->f:format.case(mode:'capital')}"
+                      arguments="{_all}"/>
+        </f:then>
+        <f:else>
+            <p>
+                Please check the configuration for the currently select captchaMethod
+                <b>{settings.powermailcaptcha.captchaMethod}</b>
+            </p>
+        </f:else>
+    </f:if>
+</f:section>
 </html>

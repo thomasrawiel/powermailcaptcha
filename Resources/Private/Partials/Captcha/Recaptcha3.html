@@ -1,4 +1,10 @@
-<html data-namespace-typo3-fluid="true">
-<script src="https://www.google.com/recaptcha/api.js?render={settings.powermailcaptcha.sitekey}{f:if(condition:settings.powermailcaptcha.useSiteLanguage,then:'&hl={languageIso}')}"
-        async defer></script>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<div id="powermail-gRecaptcha" data-sitekey="{settings.powermailcaptcha.sitekey}">
+    Test case partial
+    <f:asset.script identifier="g-recaptcha" src="//www.google.com/recaptcha/api.js?render={settings.powermailcaptcha.sitekey}{f:if(condition:settings.powermailcaptcha.useSiteLanguage,then:'&hl={languageIso}')}" priority="1"/>
+    <f:asset.script identifier="powermailcaptcha-form" src="EXT:powermailcaptcha/Resources/Public/Javascript/powermailcaptcha.js" priority="1" async="1" defer="1"/>
+    <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response"/>
+</div>
 </html>
