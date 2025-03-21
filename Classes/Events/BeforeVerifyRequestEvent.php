@@ -5,7 +5,7 @@ namespace TRAW\Powermailcaptcha\Events;
 /**
  * Class BeforeVerifyRequestEvent
  */
-final class BeforeVerifyRequestEvent
+class BeforeVerifyRequestEvent
 {
     /**
      * @var string
