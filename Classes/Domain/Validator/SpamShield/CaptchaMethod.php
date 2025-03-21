@@ -7,8 +7,10 @@ namespace TRAW\Powermailcaptcha\Domain\Validator\SpamShield;
 use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
 use Psr\Http\Message\RequestInterface;
+use TRAW\Powermailcaptcha\Events\BeforeVerifyRequestEvent;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
@@ -135,11 +137,19 @@ class CaptchaMethod extends AbstractMethod
             $additionalOptions['form_params'] = $urlParameters;
         }
 
+        /** @var BeforeVerifyRequestEvent $event */
+        $event = (GeneralUtility::makeInstance(EventDispatcher::class))
+            ->dispatch(new BeforeVerifyRequestEvent(
+                $siteVerifyUri,
+                $this->captchaConfiguration[$this->captchaMethod]['verifyMethod'],
+                $additionalOptions
+            ));
+
         $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
         $jsonResult = $requestFactory->request(
-            $siteVerifyUri,
-            $this->captchaConfiguration[$this->captchaMethod]['verifyMethod'],
-            $additionalOptions
+            $event->getSiteVerifyUri(),
+            $event->getVerifyMethod(),
+            $event->getAdditionalOptions()
         )->getBody()->getContents();
 
         $result = \json_decode($jsonResult);
@@ -234,8 +244,9 @@ class CaptchaMethod extends AbstractMethod
      *
      * @return bool
      */
-    protected function getExpextedResponseAttribute(array|\stdClass $result): bool {
-        if($this->configuration['captchaMethod'] === 'procaptcha') {
+    protected function getExpextedResponseAttribute(array|\stdClass $result): bool
+    {
+        if ($this->configuration['captchaMethod'] === 'procaptcha') {
             return $result->status === 'ok' && $result->verified;
         }
 
