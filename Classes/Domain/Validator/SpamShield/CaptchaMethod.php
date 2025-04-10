@@ -180,7 +180,8 @@ class CaptchaMethod extends AbstractMethod
         $response = null;
 
         if (!empty($request)) {
-            $response = $request->getParsedBody()[$this->captchaConfiguration[$this->captchaMethod]['responseKey']];
+            $responseKey = $this->captchaConfiguration[$this->captchaMethod]['responseKey'] ?? '';
+            $response = isset($request->getParsedBody()[$responseKey]) ? $request->getParsedBody()[$responseKey] : '';;
         }
 
         if (!empty($response)) {
@@ -202,8 +203,8 @@ class CaptchaMethod extends AbstractMethod
     {
         if (property_exists($this, 'flexForm')) {
             $action = $this->getActionName();
-            $confirmationActive = $this->flexForm['settings']['flexform']['main']['confirmation'] === '1';
-            $optinActive = $this->flexForm['settings']['flexform']['main']['optin'] === '1';
+            $confirmationActive = ($this->flexForm['settings']['flexform']['main']['confirmation'] ?? null) === '1';
+            $optinActive = ($this->flexForm['settings']['flexform']['main']['optin'] ?? null) === '1';
             if (($action === 'create' || $action === 'checkCreate') && $confirmationActive) {
                 return true;
             }
