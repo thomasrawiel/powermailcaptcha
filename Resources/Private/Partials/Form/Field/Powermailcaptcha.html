@@ -12,15 +12,13 @@
         <div class="{settings.styles.framework.fieldWrappingClasses}">
             <f:if condition="{settings.powermailcaptcha.sitekey} != 'abcdef'">
                 <f:then>
-                    <f:render partial="Captcha/{settings.powermailcaptcha.captchaMethod->f:format.case(mode:'capital')}"
-                              arguments="{_all}"/>
+                    <f:if condition="{settings.spamshield._enable}">
+                        <f:then><f:render partial="Captcha/{settings.powermailcaptcha.captchaMethod->f:format.case(mode:'capital')}"
+                                           arguments="{_all}"/></f:then>
+                        <f:else><f:render partial="Errors/Configuration" section="Spamshield" /></f:else>
+                    </f:if>
                 </f:then>
-                <f:else>
-                    <p>
-                        Please check the configuration for the currently select captchaMethod
-                        <b>{settings.powermailcaptcha.captchaMethod}</b>
-                    </p>
-                </f:else>
+                <f:else><f:render partial="Errors/Configuration" section="Sitekey" /></f:else>
             </f:if>
         </div>
     </div>
