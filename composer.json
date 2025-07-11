@@ -15,8 +15,8 @@
   ],
   "require": {
     "php": "^8.1",
-    "typo3/cms-core": "^12.4",
-    "in2code/powermail": "^12.0"
+    "typo3/cms-core": "^12 || ^13",
+    "in2code/powermail": "^12.5 || ^13"
   },
   "license": "GPL-3.0-or-later",
   "autoload": {
