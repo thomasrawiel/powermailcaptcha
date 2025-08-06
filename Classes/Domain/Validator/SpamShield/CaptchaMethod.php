@@ -20,14 +20,8 @@ use TYPO3\CMS\Extbase\Object\Exception;
  */
 class CaptchaMethod extends AbstractMethod
 {
-    /**
-     * @var string
-     */
     protected string $secretKey = '';
 
-    /**
-     * @var string
-     */
     protected string $captchaMethod = '';
 
     /**
@@ -87,6 +81,7 @@ class CaptchaMethod extends AbstractMethod
                     1607012762
                 );
             }
+
             $this->secretKey = $this->configuration['secretkey'];
         }
     }
@@ -94,20 +89,20 @@ class CaptchaMethod extends AbstractMethod
     /**
      * @return bool true if spam recognized
      */
+    #[\Override]
     public function spamCheck(): bool
     {
         if (!$this->isFormWithCaptchaField() || $this->isCaptchaCheckToSkip()) {
             return false;
         }
+
         if ($this->getCaptchaResponse() !== '') {
             return !$this->verifyCaptchaResponse();
         }
+
         return true;
     }
 
-    /**
-     * @return bool
-     */
     protected function verifyCaptchaResponse(): bool
     {
         $additionalOptions = [
@@ -153,7 +148,6 @@ class CaptchaMethod extends AbstractMethod
     /**
      * Check if current form has a recaptcha field
      *
-     * @return bool
      * @throws ExtensionConfigurationExtensionNotConfiguredException
      * @throws ExtensionConfigurationPathDoesNotExistException
      * @throws Exception
@@ -168,6 +162,7 @@ class CaptchaMethod extends AbstractMethod
                 }
             }
         }
+
         return false;
     }
 
@@ -179,14 +174,15 @@ class CaptchaMethod extends AbstractMethod
         $request = $this->getRequest();
         $response = null;
 
-        if (!empty($request)) {
+        if ($request instanceof \Psr\Http\Message\RequestInterface) {
             $responseKey = $this->captchaConfiguration[$this->captchaMethod]['responseKey'] ?? '';
-            $response = isset($request->getParsedBody()[$responseKey]) ? $request->getParsedBody()[$responseKey] : '';;
+            $response = $request->getParsedBody()[$responseKey] ?? '';
         }
 
         if (!empty($response)) {
             return $response;
         }
+
         return '';
     }
 
@@ -196,8 +192,6 @@ class CaptchaMethod extends AbstractMethod
      * Captcha check should also be skipped on optinConfirm action if double-optin is activated in Flexform.
      *
      * Note: $this->flexForm is only available in powermail 3.9 or newer
-     *
-     * @return bool
      */
     protected function isCaptchaCheckToSkip(): bool
     {
@@ -208,10 +202,12 @@ class CaptchaMethod extends AbstractMethod
             if (($action === 'create' || $action === 'checkCreate') && $confirmationActive) {
                 return true;
             }
+
             if ($action === 'optinConfirm' && $optinActive) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -223,21 +219,17 @@ class CaptchaMethod extends AbstractMethod
         $request = $this->getRequest();
         $pluginVariables = [];
 
-        if (!empty($request)) {
+        if ($request instanceof RequestInterface) {
             $getParams = $request->getQueryParams()['tx_powermail_pi1'] ?? [];
             $postParams = $request->getParsedBody()['tx_powermail_pi1'] ?? [];
             $pluginVariables = $getParams;
 
             \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginVariables, $postParams);
         }
+
         return $pluginVariables['action'] ?? '';
     }
 
-    /**
-     * @param array|\stdClass $result
-     *
-     * @return bool
-     */
     protected function getExpextedResponseAttribute(array|\stdClass $result): bool
     {
         if ($this->configuration['captchaMethod'] === 'procaptcha') {
@@ -247,9 +239,6 @@ class CaptchaMethod extends AbstractMethod
         return (bool)$result->success;
     }
 
-    /**
-     * @return RequestInterface|null
-     */
     protected function getRequest(): ?RequestInterface
     {
         return $GLOBALS['TYPO3_REQUEST'] ?? null;

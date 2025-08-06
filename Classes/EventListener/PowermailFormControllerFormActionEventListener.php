@@ -20,13 +20,15 @@ final class PowermailFormControllerFormActionEventListener implements SingletonI
 {
     public function handleEvent(FormControllerFormActionEvent $event): void
     {
-        if ($event->getForm() === null) {
+        if (!$event->getForm() instanceof \In2code\Powermail\Domain\Model\Form) {
             return;
         }
+
         $settings = $event->getFormController()->getSettings();
 
         if ($settings['powermailcaptcha']['useSiteLanguage'] ?? 0) {
-            $event->addViewVariables([
+            $event->addViewVariables(
+                [
                     'languageIso' => $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->getLocale()->getLanguageCode(),
                 ]
             );
