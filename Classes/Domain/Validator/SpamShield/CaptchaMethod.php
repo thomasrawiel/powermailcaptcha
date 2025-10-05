@@ -147,7 +147,7 @@ class CaptchaMethod extends AbstractMethod
 
         $result = \json_decode($jsonResult);
 
-        return $this->getExpextedResponseAttribute($result);
+        return $this->getExpectedResponseAttribute($result);
     }
 
     /**
@@ -222,7 +222,7 @@ class CaptchaMethod extends AbstractMethod
      *
      * @return bool
      */
-    protected function getExpextedResponseAttribute(array|\stdClass $result): bool
+    protected function getExpectedResponseAttribute($result): bool
     {
         if ($this->configuration['captchaMethod'] === 'procaptcha') {
             return $result->status === 'ok' && $result->verified;
