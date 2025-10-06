@@ -1,0 +1,4 @@
+name: traw/powermailcaptcha
+label: 'Powermail Captcha'
+dependencies:
+  - in2code/powermail-main

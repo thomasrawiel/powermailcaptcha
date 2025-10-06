@@ -1,0 +1,36 @@
+categories:
+  powermailcaptcha:
+    label: Powermail Captcha
+
+settings:
+  plugin.tx_powermailcaptcha.enable:
+    type: bool
+    default: '1'
+    label: Enable Captcha Frontend Rendering
+    category: powermailcaptcha
+  plugin.tx_powermailcaptcha.sitekey:
+    type: string
+    default: 'abcdef'
+    label: Captcha Sitekey
+    category: powermailcaptcha
+  plugin.tx_powermailcaptcha.secretkey:
+    type: string
+    default: 'abcdef'
+    label: Captcha Secret Key
+    category: powermailcaptcha
+  plugin.tx_powermailcaptcha.captchaMethod:
+    type: string
+    default: 'recaptcha'
+    label: Captcha type
+    category: powermailcaptcha
+    enum:
+      recaptcha: 'Google Recaptcha'
+      friendlycaptcha: 'Friendly Captcha'
+      hcaptcha: 'hCaptcha'
+      cloudflare: 'Cloudflare Turnstile'
+      procaptcha: 'Prosopo Procaptcha'
+  plugin.tx_powermailcaptcha.useSiteLanguage:
+    default: '1'
+    type: bool
+    label: Force website language instead of browser language
+    category: powermailcaptcha
