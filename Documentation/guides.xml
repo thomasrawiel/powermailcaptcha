@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guides xmlns="https://www.phpdoc.org/guides" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
+        links-are-relative="true"
+        default-code-language="php"
+>
+  <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
+             project-home="&lt;project-home&gt;"
+             project-repository="https://github.com/thomasrawiel/powermailcaptcha/"
+             project-issues="https://github.com/thomasrawiel/powermailcaptcha/issues"
+             edit-on-github-branch="main"
+             edit-on-github="thomasrawiel/powermailcaptcha"
+             typo3-core-preferred="13.4"
+             interlink-shortcode="thomasrawiel/powermailcaptcha"
+  />
+  <project title="powermailcaptcha"
+           release="2.0"
+           version="2.2.0"
+           copyright="Thomas Rawiel &amp; Contributors "
+  />
+  <inventory id="t3coreapi"
+             url="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/"
+  />
+  <inventory id="t3sitepackage"
+             url="https://docs.typo3.org/m/typo3/tutorial-sitepackage/main/en-us/"
+  />
+  <inventory id="t3viewhelper"
+             url="https://docs.typo3.org/other/typo3/view-helper-reference/main/en-us/"
+  />
+  <inventory id="t3upgrade"
+             url="https://docs.typo3.org/m/typo3/guide-installation/main/en-us/"
+  />
+</guides>
