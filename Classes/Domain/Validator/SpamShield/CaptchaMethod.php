@@ -239,11 +239,10 @@ class CaptchaMethod extends AbstractMethod
 
     protected function getExpectedResponseAttribute(array|\stdClass $result): bool
     {
-        if ($this->configuration['captchaMethod'] === 'procaptcha') {
-            return $result->status === 'ok' && $result->verified;
-        }
+        $event = (GeneralUtility::makeInstance(EventDispatcher::class))
+            ->dispatch(new ExpectedResponseEvent($this->configuration, $result));
         
-        return (bool)$result->success;
+        return $event->getResponse();
     }
 
     protected function getRequest(): ?RequestInterface
