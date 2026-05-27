@@ -27,7 +27,7 @@
   "extra": {
     "typo3/cms": {
       "extension-key": "powermailcaptcha",
-      "version": "1.9.0",
+      "version": "3.2.0",
       "Package": {
         "providesPackages": {}
       }

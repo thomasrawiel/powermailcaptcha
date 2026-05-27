@@ -34,5 +34,6 @@ Hints
 
     <f:render partial="Form/Field/{vh:String.Upper(string:field.type)}" arguments="{field:field, languageIso:languageIso}"/>
 
+.. versionadded:: 3.2.0
 
-
+    Captcha providers can be extended using the new PSR-14 events. See  `Extend Captcha Providers <https://docs.typo3.org/permalink/thomasrawiel-powermailcaptcha:extend>`_
