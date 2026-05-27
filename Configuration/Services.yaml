@@ -6,9 +6,3 @@ services:
 
   TRAW\Powermailcaptcha\:
     resource: '../Classes/*'
-
-  TRAW\Powermailcaptcha\EventListener\PowermailFormControllerFormActionEventListener:
-    tags:
-      - name: event.listener
-        method: handleEvent
-        identifier: 'powermailcaptchaFormControllerFormActionEventListener'
