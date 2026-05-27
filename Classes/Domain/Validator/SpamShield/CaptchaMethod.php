@@ -8,6 +8,8 @@ use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
 use Psr\Http\Message\RequestInterface;
 use TRAW\Powermailcaptcha\Events\BeforeVerifyRequestEvent;
+use TRAW\Powermailcaptcha\Events\CaptchaConfigurationEvent;
+use TRAW\Powermailcaptcha\Events\ExpectedResponseEvent;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -24,10 +26,12 @@ class CaptchaMethod extends AbstractMethod
 
     protected string $captchaMethod = '';
 
+    protected array $captchaConfiguration = [];
+
     /**
      * @var array|array[]
      */
-    protected array $captchaConfiguration = [
+    protected array $defaultCaptchaConfiguration = [
         'recaptcha' => [
             'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
             'verifyMethod' => 'GET',
@@ -72,6 +76,9 @@ class CaptchaMethod extends AbstractMethod
      */
     public function initialize(): void
     {
+        $configurationEvent = (GeneralUtility::makeInstance(EventDispatcher::class))
+            ->dispatch(new CaptchaConfigurationEvent($this->defaultCaptchaConfiguration));
+        $this->captchaConfiguration = $configurationEvent->getConfiguration();
         $this->captchaMethod = $this->configuration['captchaMethod'];
 
         if ($this->isFormWithCaptchaField()) {
@@ -235,7 +242,7 @@ class CaptchaMethod extends AbstractMethod
         if ($this->configuration['captchaMethod'] === 'procaptcha') {
             return $result->status === 'ok' && $result->verified;
         }
-
+        
         return (bool)$result->success;
     }
 
