@@ -1,6 +1,6 @@
 {
   "name": "traw/powermailcaptcha",
-  "description": "powermailcaptcha - Captcha Extension for Powermail",
+  "description": "Powermail Captcha - Captcha Extension for Powermail",
   "type": "typo3-cms-extension",
   "keywords": [
     "TYPO3 CMS",
@@ -27,7 +27,7 @@
   "extra": {
     "typo3/cms": {
       "extension-key": "powermailcaptcha",
-      "version": "3.2.0",
+      "version": "3.2.1",
       "Package": {
         "providesPackages": {}
       }
