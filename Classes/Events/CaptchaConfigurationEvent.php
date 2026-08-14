@@ -5,15 +5,15 @@ namespace TRAW\Powermailcaptcha\Events;
 
 class CaptchaConfigurationEvent
 {
-    public function __construct(private array $configuration){}
+    public function __construct(private array $captchaConfiguration) {}
 
-    public function getConfiguration(): array
+    public function getCaptchaConfiguration(): array
     {
-        return $this->configuration;
+        return $this->captchaConfiguration;
     }
 
-    public function setConfiguration(array $configuration): void
+    public function setCaptchaConfiguration(array $captchaConfiguration): void
     {
-        $this->configuration = $configuration;
+        $this->captchaConfiguration = $captchaConfiguration;
     }
 }
