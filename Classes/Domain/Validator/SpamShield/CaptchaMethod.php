@@ -8,6 +8,7 @@ use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Domain\Validator\SpamShield\AbstractMethod;
 use Psr\Http\Message\RequestInterface;
 use TRAW\Powermailcaptcha\Events\BeforeVerifyRequestEvent;
+use TRAW\Powermailcaptcha\Events\CaptchaConfigurationEvent;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
@@ -24,10 +25,14 @@ class CaptchaMethod extends AbstractMethod
 
     protected string $captchaMethod = '';
 
+    protected array $captchaConfiguration = [];
+
+    protected EventDispatcher $eventDispatcher;
+
     /**
      * @var array|array[]
      */
-    protected const array captchaConfiguration = [
+    protected const array defaultCaptchaConfiguration = [
         'recaptcha' => [
             'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
             'verifyMethod' => 'GET',
@@ -36,14 +41,20 @@ class CaptchaMethod extends AbstractMethod
             'responseParameter' => 'response',
         ],
         'friendlycaptcha' => [
-            'siteVerifyUri' => 'https://api.friendlycaptcha.com/api/v1/siteverify',
+            'siteVerifyUri' => [
+                'default' => 'https://api.friendlycaptcha.com/api/v1/siteverify',
+                'eu' => 'https://eu-api.friendlycaptcha.eu/api/v1/siteverify',
+            ],
             'verifyMethod' => 'POST',
             'responseKey' => 'frc-captcha-solution',
             'secretParameter' => 'secret',
             'responseParameter' => 'solution',
         ],
         'friendlycaptcha2' => [
-            'siteVerifyUri' => 'https://global.frcapi.com/api/v2/captcha/siteverify',
+            'siteVerifyUri' => [
+                'default' => 'https://global.frcapi.com/api/v2/captcha/siteverify',
+                'eu' => 'https://eu.frcapi.com/api/v2/captcha/siteverify',
+            ],
             'verifyMethod' => 'POST',
             'responseKey' => 'frc-captcha-response',
             'secretParameter' => null, //intentionally null
@@ -82,6 +93,7 @@ class CaptchaMethod extends AbstractMethod
      */
     public function initialize(): void
     {
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcher::class);
         $this->captchaMethod = $this->configuration['captchaMethod'];
 
         if ($this->isFormWithCaptchaField()) {
@@ -93,6 +105,18 @@ class CaptchaMethod extends AbstractMethod
             }
 
             $this->secretKey = $this->configuration['secretkey'];
+        }
+
+        $captchaConfigration = $this->eventDispatcher->dispatch(
+            new CaptchaConfigurationEvent(self::defaultCaptchaConfiguration)
+        )->getCaptchaConfiguration();
+
+        $this->captchaConfiguration = $captchaConfigration[$this->captchaMethod] ?? [];
+
+        if ($this->captchaConfiguration === []) {
+            throw new \LogicException(
+                sprintf('Unsupported captcha method "%s".', $this->captchaMethod)
+            );
         }
     }
 
@@ -120,47 +144,40 @@ class CaptchaMethod extends AbstractMethod
             'allow_redirects' => false,
         ];
 
-        $currentConfiguration = self::captchaConfiguration[$this->captchaMethod];
-
-        if ($currentConfiguration === null) {
-            throw new \LogicException(
-                sprintf('Unsupported captcha method "%s".', $this->captchaMethod)
-            );
-        }
-
         $urlParameters = [];
 
-        $responseParameter = $currentConfiguration['responseParameter'] ?? false;
+        $responseParameter = $this->captchaConfiguration['responseParameter'] ?? false;
         if ((bool)$responseParameter) {
             $urlParameters[$responseParameter] = $this->getCaptchaResponse();
         }
 
-        $secretParameter = $currentConfiguration['secretParameter'] ?? null;
+        $secretParameter = $this->captchaConfiguration['secretParameter'] ?? null;
         if ((bool)$secretParameter) {
             $urlParameters[$secretParameter] = $this->secretKey;
         }
 
-        $siteVerifyUri = $currentConfiguration['siteVerifyUri'];
+        $siteVerifyUri = $this->getSiteVerifyUri();
 
-        if ($currentConfiguration['verifyMethod'] === 'GET') {
+        if ($this->captchaConfiguration['verifyMethod'] === 'GET') {
             $siteVerifyUri = $siteVerifyUri . '?' . http_build_query($urlParameters);
         }
 
-        if ($currentConfiguration['verifyMethod'] === 'POST') {
+        if ($this->captchaConfiguration['verifyMethod'] === 'POST') {
             $additionalOptions['form_params'] = $urlParameters;
         }
 
-        if ($currentConfiguration['additionalOptions'] ?? false) {
-            $additionalOptions = array_replace_recursive($additionalOptions, $currentConfiguration['additionalOptions']);
+        if ($this->captchaConfiguration['additionalOptions'] ?? false) {
+            $additionalOptions = array_replace_recursive($additionalOptions, $this->captchaConfiguration['additionalOptions']);
         }
 
         /** @var BeforeVerifyRequestEvent $event */
-        $event = (GeneralUtility::makeInstance(EventDispatcher::class))
-            ->dispatch(new BeforeVerifyRequestEvent(
+        $event = $this->eventDispatcher->dispatch(
+            new BeforeVerifyRequestEvent(
                 $siteVerifyUri,
-                $currentConfiguration['verifyMethod'],
+                $this->captchaConfiguration['verifyMethod'],
                 $additionalOptions
-            ));
+            )
+        );
 
         $additionalOptions = $this->replacePlaceHolders($event->getAdditionalOptions());
 
@@ -206,7 +223,7 @@ class CaptchaMethod extends AbstractMethod
         $response = null;
 
         if ($request instanceof RequestInterface) {
-            $responseKey = self::captchaConfiguration[$this->captchaMethod]['responseKey'] ?? '';
+            $responseKey = $this->captchaConfiguration['responseKey'] ?? '';
             $response = $request->getParsedBody()[$responseKey] ?? '';
         }
 
@@ -287,5 +304,20 @@ class CaptchaMethod extends AbstractMethod
         return is_string($value)
             ? str_replace('###SECRET_KEY###', $this->secretKey, $value)
             : $value;
+    }
+
+    private function getSiteVerifyUri(): string
+    {
+        $url = $this->captchaConfiguration['siteVerifyUri'];
+        $endpoint = $this->configuration['endpoint'];
+        
+        if (is_array($url)) {
+            if (!isset($url[$endpoint])) {
+                throw new \LogicException('Endpoint "' . $endpoint . '" does not exist');
+            }
+            return $url[$endpoint];
+        }
+
+        return $url;
     }
 }

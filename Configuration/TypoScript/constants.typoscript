@@ -1,16 +1,19 @@
 plugin.tx_powermailcaptcha {
-  # cat=powermailcaptcha//0001; type=boolean; label= Enable Captcha Frontend Rendering
-  enable = 1
+    # cat=powermailcaptcha//0001; type=boolean; label= Enable Captcha Frontend Rendering
+    enable = 1
 
-  # cat=powermailcaptcha//0010; type=text; label= Captcha Sitekey
-  sitekey = abcdef
+    # cat=powermailcaptcha//0010; type=text; label= Captcha Sitekey
+    sitekey = abcdef
 
-  # cat=powermailcaptcha//0020; type=text; label= Captcha Secret Key
-  secretkey = abcdef
+    # cat=powermailcaptcha//0020; type=text; label= Captcha Secret Key
+    secretkey = abcdef
 
-  # cat=powermailcaptcha//0030; type=options [Google Recaptcha=recaptcha,Friendly Captcha V1=friendlycaptcha,Friendly Captcha V2=friendlycaptcha2,hCaptcha=hcaptcha,Cloudflare Turnstile=cloudflare,Prosopo Procaptcha=procaptcha]; label= Captcha type
-  captchaMethod = recaptcha
+    # cat=powermailcaptcha//0030; type=options [Google Recaptcha=recaptcha,Friendly Captcha V1=friendlycaptcha,Friendly Captcha V2=friendlycaptcha2,hCaptcha=hcaptcha,Cloudflare Turnstile=cloudflare,Prosopo Procaptcha=procaptcha]; label= Captcha type
+    captchaMethod = recaptcha
 
-  # cat=powermailcaptcha//0040; type=boolean; label= Force website language instead of browser language
-  useSiteLanguage = 1
+    # cat=powermailcaptcha//0040; type=boolean; label= Force website language instead of browser language
+    useSiteLanguage = 1
+
+    # cat=powermailcaptcha//0050; type=options [Default=default,EU=eu]; label= Verify Url Endpoint (friendlycaptcha only)
+    endpoint = default
 }

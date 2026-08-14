@@ -35,3 +35,11 @@ settings:
     type: bool
     label: Force website language instead of browser language
     category: powermailcaptcha
+  plugin.tx_powermailcaptcha.endpoint:
+    type: string
+    default: 'default'
+    label: Verify Url Endpoint (friendlycaptcha only)
+    category: powermailcaptcha
+    enum:
+      default: 'Default'
+      eu: 'EU'
