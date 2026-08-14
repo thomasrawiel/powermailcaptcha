@@ -7,10 +7,10 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Thomas Rawiel',
     'author_email' => 'thomas.rawiel@gmail.com',
     'state' => 'stable',
-    'version' => '3.1.1',
+    'version' => '3.1.2',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.0-13.4.99',
+            'typo3' => '12.4.0-13.4.99',
             'powermail' => '12.5.0-13.99.99',
         ],
         'conflicts' => [
