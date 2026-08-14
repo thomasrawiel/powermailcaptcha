@@ -25,7 +25,8 @@ settings:
     category: powermailcaptcha
     enum:
       recaptcha: 'Google Recaptcha'
-      friendlycaptcha: 'Friendly Captcha'
+      friendlycaptcha: 'Friendly Captcha V1'
+      friendlycaptcha2: 'Friendly Captcha V2'
       hcaptcha: 'hCaptcha'
       cloudflare: 'Cloudflare Turnstile'
       procaptcha: 'Prosopo Procaptcha'
