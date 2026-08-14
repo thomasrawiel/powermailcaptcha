@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Object\Exception;
 /**
  * Class CaptchaMethod
  */
-class CaptchaMethod extends AbstractMethod
+final class CaptchaMethod extends AbstractMethod
 {
     protected string $secretKey = '';
 

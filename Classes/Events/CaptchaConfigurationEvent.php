@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TRAW\Powermailcaptcha\Events;
 
-class CaptchaConfigurationEvent
+final class CaptchaConfigurationEvent
 {
     public function __construct(private array $captchaConfiguration) {}
 

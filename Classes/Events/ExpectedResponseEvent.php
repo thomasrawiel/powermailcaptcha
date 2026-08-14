@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace TRAW\Powermailcaptcha\Events;
 
-class ExpectedResponseEvent
+final class ExpectedResponseEvent
 {
     private bool $response = false;
 

@@ -7,7 +7,7 @@ use TRAW\Powermailcaptcha\Events\ExpectedResponseEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 
 #[AsEventListener(identifier: 'powermailcaptchaExpectedResponse')]
-class ExpectedResponseEventListener
+final class ExpectedResponseEventListener
 {
     public function __invoke(ExpectedResponseEvent $event)
     {
