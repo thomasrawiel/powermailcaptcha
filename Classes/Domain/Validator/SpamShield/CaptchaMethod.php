@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExis
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
 
 /**
@@ -273,7 +274,7 @@ class CaptchaMethod extends AbstractMethod
             $postParams = $request->getParsedBody()['tx_powermail_pi1'] ?? [];
             $pluginVariables = $getParams;
 
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginVariables, $postParams);
+            ArrayUtility::mergeRecursiveWithOverrule($pluginVariables, $postParams);
         }
 
         return $pluginVariables['action'] ?? '';
