@@ -20,4 +20,5 @@ Configuration
 
    TyposcriptReference
    Hints
+   ExtendCaptchaProviders
 

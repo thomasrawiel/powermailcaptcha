@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TRAW\Powermailcaptcha\EventListener;
 
 use In2code\Powermail\Events\FormControllerFormActionEvent;
-use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 
 /**
  * >= v12 only
@@ -16,9 +16,10 @@ use TYPO3\CMS\Core\SingletonInterface;
  * Documentation: How to listen to events
  * @see https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Events/EventDispatcher/Index.html
  */
-final class PowermailFormControllerFormActionEventListener implements SingletonInterface
+#[AsEventListener(identifier: 'powermailcaptchaExpectedResponse')]
+final class PowermailFormControllerFormActionEventListener
 {
-    public function handleEvent(FormControllerFormActionEvent $event): void
+    public function __invoke(FormControllerFormActionEvent $event): void
     {
         if (!$event->getForm() instanceof \In2code\Powermail\Domain\Model\Form) {
             return;

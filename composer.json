@@ -1,6 +1,6 @@
 {
   "name": "traw/powermailcaptcha",
-  "description": "Captcha Extension for Powermail",
+  "description": "Powermail Captcha - Captcha Extension for Powermail",
   "type": "typo3-cms-extension",
   "keywords": [
     "TYPO3 CMS",
@@ -14,9 +14,9 @@
     }
   ],
   "require": {
-    "php": "^8.1",
-    "typo3/cms-core": "^12 || ^13",
-    "in2code/powermail": "^12.5 || ^13"
+    "php": "^8.3",
+    "typo3/cms-core": "^13 || ^14",
+    "in2code/powermail": "^13 || ^14"
   },
   "license": "GPL-3.0-or-later",
   "autoload": {
@@ -26,7 +26,11 @@
   },
   "extra": {
     "typo3/cms": {
-      "extension-key": "powermailcaptcha"
+      "extension-key": "powermailcaptcha",
+      "version": "3.3.0-stable",
+      "Package": {
+        "providesPackages": {}
+      }
     }
   }
 }
