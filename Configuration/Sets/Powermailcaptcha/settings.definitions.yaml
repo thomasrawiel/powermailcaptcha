@@ -1,11 +1,20 @@
 categories:
   powermailcaptcha:
     label: Powermail Captcha
+  powermailcaptcha.recaptcha:
+    label: Google Recaptcha v3
+    parent: powermailcaptcha
+  powermailcaptcha.recaptcha3:
+    label: Google Recaptcha v3
+    parent: powermailcaptcha.recaptcha
+  powermailcaptcha.friendly:
+    label: Friendlycaptcha
+    parent: powermailcaptcha
 
 settings:
   plugin.tx_powermailcaptcha.enable:
     type: bool
-    default: '1'
+    default: true
     label: Enable Captcha Frontend Rendering
     category: powermailcaptcha
   plugin.tx_powermailcaptcha.sitekey:
@@ -24,14 +33,15 @@ settings:
     label: Captcha type
     category: powermailcaptcha
     enum:
-      recaptcha: 'Google Recaptcha'
+      recaptcha: 'Google Recaptcha v2 (Checkbox)'
+      recaptcha3: 'Google Recaptcha v3'
       friendlycaptcha: 'Friendly Captcha V1'
       friendlycaptcha2: 'Friendly Captcha V2'
       hcaptcha: 'hCaptcha'
       cloudflare: 'Cloudflare Turnstile'
       procaptcha: 'Prosopo Procaptcha'
   plugin.tx_powermailcaptcha.useSiteLanguage:
-    default: '1'
+    default: true
     type: bool
     label: Force website language instead of browser language
     category: powermailcaptcha
@@ -39,7 +49,20 @@ settings:
     type: string
     default: 'default'
     label: Verify Url Endpoint (friendlycaptcha only)
-    category: powermailcaptcha
+    category: powermailcaptcha.friendly
     enum:
       default: 'Default'
       eu: 'EU'
+  plugin.tx_powermailcaptcha.minScore:
+    default: 0.8
+    type: number
+    label: Minimum Score (0.0 - 1.0)
+    description: https://developers.google.com/recaptcha/docs/v3#interpreting_the_score
+    category: powermailcaptcha.recaptcha
+  plugin.tx_powermailcaptcha.action:
+    default: 'powermai_form_submit'
+    type: string
+    label: Expected action
+    description: https://developers.google.com/recaptcha/docs/v3#actions
+    category: powermailcaptcha.recaptcha
+

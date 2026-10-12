@@ -37,14 +37,21 @@ final class CaptchaMethod extends AbstractMethod
     protected const array defaultCaptchaConfiguration = [
         'recaptcha' => [
             'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
-            'verifyMethod' => 'GET',
+            'verifyMethod' => 'POST',
+            'responseKey' => 'g-recaptcha-response',
+            'secretParameter' => 'secret',
+            'responseParameter' => 'response',
+        ],
+        'recaptchainv' => [
+            'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
+            'verifyMethod' => 'POST',
             'responseKey' => 'g-recaptcha-response',
             'secretParameter' => 'secret',
             'responseParameter' => 'response',
         ],
         'recaptcha3' => [
             'siteVerifyUri' => 'https://www.google.com/recaptcha/api/siteverify',
-            'verifyMethod' => 'GET',
+            'verifyMethod' => 'POST',
             'responseKey' => 'g-recaptcha-response',
             'secretParameter' => 'secret',
             'responseParameter' => 'response',
@@ -155,9 +162,14 @@ final class CaptchaMethod extends AbstractMethod
 
         $urlParameters = [];
 
+        $captchaResponse = $this->getCaptchaResponse();
+        if ($captchaResponse === '') {
+            return false;
+        }
+
         $responseParameter = $this->captchaConfiguration['responseParameter'] ?? false;
         if ((bool)$responseParameter) {
-            $urlParameters[$responseParameter] = $this->getCaptchaResponse();
+            $urlParameters[$responseParameter] = $captchaResponse;
         }
 
         $secretParameter = $this->captchaConfiguration['secretParameter'] ?? null;
@@ -290,7 +302,7 @@ final class CaptchaMethod extends AbstractMethod
     protected function getExpectedResponseAttribute(array|\stdClass $result): bool
     {
         $event = $this->eventDispatcher->dispatch(
-            new ExpectedResponseEvent($this->configuration, $result)
+            new ExpectedResponseEvent($this->configuration, $result, $this->getRequest())
         );
 
         return $event->getResponse();
