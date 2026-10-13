@@ -19,6 +19,6 @@ Configuration
    :hidden:
 
    TyposcriptReference
-   Hints
    ExtendCaptchaProviders
+   Hints
 

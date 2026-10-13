@@ -13,7 +13,7 @@ powermailcaptcha
     traw/powermailcaptcha
 
 :Version:
-    2.2.1
+    3.4.0
 
 :Language:
     en

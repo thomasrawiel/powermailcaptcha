@@ -6,6 +6,10 @@
 Older versions
 ============
 
+The latest version of powermailcaptcha supports TYPO3 13 and 14
+
+For TYPO3 12, install `traw/powermailcaptcha ^3.1`
+
 For TYPO3 11 and older powermail versions, please install `traw/powermailcaptcha ^1.0`
 
 Requirements::
